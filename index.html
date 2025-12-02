@@ -3,6 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <title>pengu</title>
   <style>
     html, body {
@@ -17,6 +19,8 @@
       color: #fff;
       font-family: Arial, sans-serif;
       overflow: hidden;
+      width: 100vw;
+      height: 100vh;
     }
     #timer {
       font-size: clamp(32px, 12vw, 120px);
@@ -37,10 +41,11 @@
       }
     }
     
-    @media (max-width: 480px) {
+    @media (max-height: 500px) {
       #timer {
-        font-size: clamp(18px, 8vw, 50px);
+        font-size: clamp(48px, 20vw, 100px);
         letter-spacing: 2px;
+        padding: 10px;
       }
     }
   </style>
@@ -49,6 +54,13 @@
   <div id="timer">00:00:00:00</div>
 
   <script>
+    // Request landscape orientation on mobile
+    if (screen.orientation && screen.orientation.lock) {
+      screen.orientation.lock('landscape').catch(() => {
+        // Fallback if lock fails
+      });
+    }
+
     function updateTimer() {
       const target = new Date("December 15, 2025 00:00:00").getTime();
       const now = Date.now();
