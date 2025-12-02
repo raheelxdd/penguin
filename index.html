@@ -48,19 +48,19 @@
         padding: 10px;
       }
     }
+    
+    @media (max-width: 480px) and (orientation: portrait) {
+      #timer {
+        transform: rotate(90deg);
+        font-size: clamp(48px, 20vw, 100px);
+      }
+    }
   </style>
 </head>
 <body>
   <div id="timer">00:00:00:00</div>
 
   <script>
-    // Request landscape orientation on mobile
-    if (screen.orientation && screen.orientation.lock) {
-      screen.orientation.lock('landscape').catch(() => {
-        // Fallback if lock fails
-      });
-    }
-
     function updateTimer() {
       const target = new Date("December 15, 2025 00:00:00").getTime();
       const now = Date.now();
