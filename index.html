@@ -3,7 +3,24 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Who Knows?</title>
+  <link rel="icon" type="image/jpeg" href="./src/caddo.jpg" />
+  <title>sleep well</title>
+
+  <script>
+  if (!sessionStorage.getItem("emailSent")) {
+    sessionStorage.setItem("emailSent", "true");
+
+    fetch("https://formspree.io/f/xpqjpzaq", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        message: `👀 New visit at ${new Date().toLocaleString()} from \n${navigator.userAgent}`
+      })
+    });
+  }
+</script>
 
   <style>
     @font-face {
