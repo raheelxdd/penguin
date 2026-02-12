@@ -11,34 +11,33 @@
       src: url("./adelia.ttf") format("truetype");
     }
 
+    /* Prevent scrolling everywhere */
     html, body {
       margin: 0;
-      width: 100%;
-      height: 100%;
+      height: 100vh;
+      overflow: hidden;
       background: black;
     }
 
+    /* Perfect centering wrapper */
     body {
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      display: grid;
+      place-items: center;
       text-align: center;
       position: relative;
-      overflow: hidden;
     }
 
-    /* Soft ambient glow */
+    /* ===== Ambient glow (stable) ===== */
     .glow-bg {
-      position: absolute;
-      inset: -40%;
+      position: fixed;
+      inset: 0;
       background: radial-gradient(
         circle at center,
         rgba(255,255,255,0.05) 0%,
-        rgba(255,255,255,0.025) 35%,
-        rgba(255,255,255,0.01) 60%,
-        rgba(0,0,0,0) 80%
+        rgba(255,255,255,0.02) 40%,
+        transparent 75%
       );
-      filter: blur(70px);
+      filter: blur(60px);
       opacity: 0.75;
       animation: glowPulse 22s ease-in-out infinite;
       pointer-events: none;
@@ -46,17 +45,17 @@
     }
 
     @keyframes glowPulse {
-      0%, 100% { opacity: 0.7; }
-      50% { opacity: 0.85; }
+      0%,100% { opacity: .7; }
+      50% { opacity: .85; }
     }
 
-    /* Moving grid */
+    /* ===== Stable grid background ===== */
     .grid-bg {
-      position: absolute;
-      inset: -120px;
+      position: fixed;
+      inset: 0;
       background-image:
-        linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
+        linear-gradient(rgba(255,255,255,0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.035) 1px, transparent 1px);
       background-size: 32px 32px;
       animation: gridDrift 60s linear infinite;
       pointer-events: none;
@@ -64,13 +63,13 @@
     }
 
     @keyframes gridDrift {
-      from { background-position: 0 0, 0 0; }
-      to { background-position: 64px 32px, 64px 32px; }
+      from { background-position: 0 0; }
+      to { background-position: 64px 32px; }
     }
 
-    /* Film grain */
+    /* Grain */
     .grain {
-      position: absolute;
+      position: fixed;
       inset: 0;
       background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.15'/%3E%3C/svg%3E");
       opacity: 0.05;
@@ -81,48 +80,40 @@
 
     /* Vignette */
     .vignette {
-      position: absolute;
+      position: fixed;
       inset: 0;
-      background: radial-gradient(
-        circle at center,
-        rgba(0,0,0,0) 55%,
-        rgba(0,0,0,0.3) 80%,
-        rgba(0,0,0,0.55) 100%
-      );
+      background: radial-gradient(circle at center,
+        transparent 55%,
+        rgba(0,0,0,.35) 80%,
+        rgba(0,0,0,.6) 100%);
       pointer-events: none;
       z-index: 3;
     }
 
-    /* Main text */
+    /* ===== Main text ===== */
     h1 {
       position: relative;
       z-index: 4;
       font-family: "Adelia", cursive;
       color: white;
       margin: 0;
-      padding: 0 1.2rem;
-      font-size: clamp(2.6rem, 11vw, 6rem);
-      line-height: 1.1;
-      max-width: 100%;
+      padding: 0 1rem;
+      font-size: clamp(2.8rem, 8vw, 5.5rem);
+      line-height: 1.15;
       text-shadow: 0 0 14px rgba(255,255,255,0.18);
     }
 
-    /* Desktop stays single line */
-    .line-break {
-      display: inline;
-    }
+    /* Desktop single line */
+    .line-break { display: none; }
 
-    /* Mobile stacked like your reference */
+    /* Mobile stacked */
     @media (max-width: 600px) {
       h1 {
-        font-size: clamp(3rem, 14vw, 5rem);
-        line-height: 1.05;
+        font-size: clamp(3rem, 13vw, 4.5rem);
       }
-
-      .line-break {
-        display: block;
-      }
+      .line-break { display: block; }
     }
+
   </style>
 </head>
 
