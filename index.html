@@ -6,21 +6,26 @@
   <link rel="icon" type="image/jpeg" href="./src/caddo.jpg" />
   <title>sleep well</title>
 
-  <script>
-  if (!sessionStorage.getItem("emailSent")) {
-    sessionStorage.setItem("emailSent", "true");
+ <script>
+  if (!sessionStorage.getItem("visitSent")) {
+    sessionStorage.setItem("visitSent", "true");
 
     fetch("https://formspree.io/f/xpqjpzaq", {
       method: "POST",
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
+        "Accept": "application/json"
       },
       body: JSON.stringify({
-        message: `👀 New visit at ${new Date().toLocaleString()} from \n${navigator.userAgent}`
+        message: `pengu was curious at ${new Date().toLocaleString()} from \n${navigator.userAgent}`
+        time: new Date().toLocaleString(),
+        page: window.location.href,
+        referrer: document.referrer || "Direct"
       })
     });
   }
 </script>
+
 
   <style>
     @font-face {
