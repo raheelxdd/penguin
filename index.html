@@ -1,152 +1,228 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="icon" type="image/jpeg" href="./src/caddo.jpg" />
-  <title>sleep well</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>morning dew</title>
 
- <script>
-  if (!sessionStorage.getItem("visitSent")) {
-    sessionStorage.setItem("visitSent", "true");
+<style>
+@font-face {
+  font-family: "Adelia";
+  src: url("./adelia.ttf") format("truetype");
+}
 
-    fetch("https://formspree.io/f/xzdaegjb", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Accept": "application/json"
-      },
-      body: JSON.stringify({
-        message: `pengu was curious at ${new Date().toLocaleString()} from \n${navigator.userAgent}`,
-        time: new Date().toLocaleString(),
-        page: window.location.href,
-        referrer: document.referrer || "Direct"
-      })  
-    });
+html, body {
+  margin: 0;
+  height: 100vh;
+  overflow: hidden;
+  background: black;
+}
+
+body {
+  display: grid;
+  place-items: center;
+  position: relative;
+}
+
+.nav {
+  position: fixed;
+  top: 60px;
+  left: 50%;
+  transform: translateX(-50%);
+  transform-origin: center;
+  z-index: 10;
+
+  /* initial size = 20% viewport */
+  width: 20vw;
+  max-width: 90vw;
+
+  padding: 20px 0;
+  border-radius: 999px;
+  background: #000 !important;
+
+  border: 1.5px solid rgba(255,255,255,.18);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  font-family: system-ui, sans-serif;
+  font-size: clamp(14px, 1.2vw, 18px);
+  letter-spacing: .15em;
+  color: white;
+  text-decoration: none;
+  cursor: pointer;
+
+  box-shadow:
+    0 0 18px rgba(255,255,255,.08),
+    0 30px 60px rgba(0,0,0,.95);
+
+  /* smooth cinematic expansion */
+  transition:
+    width 1.2s cubic-bezier(.22,1,.36,1),
+    box-shadow 1.2s cubic-bezier(.22,1,.36,1);
+
+  animation: navEnter 1.2s cubic-bezier(.22,1,.36,1) both;
+}
+
+.nav:hover,
+.nav:active {
+  /* expanded size = 40% viewport */
+  width: 40vw;
+
+  box-shadow:
+    0 0 40px rgba(255,255,255,.2),
+    0 40px 80px rgba(0,0,0,.98);
+}
+
+@keyframes navEnter {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-40px) scaleX(1);
   }
-</script>
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0) scaleX(1);
+  }
+}
 
+.glow-bg {
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(circle at center,
+    rgba(255,255,255,0.05) 0%,
+    rgba(255,255,255,0.02) 40%,
+    transparent 75%);
+  filter: blur(60px);
+  opacity: 0.75;
+  animation: glowPulse 18s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 0;
+}
 
-  <style>
-    @font-face {
-      font-family: "Adelia";
-      src: url("./adelia.ttf") format("truetype");
-    }
+@keyframes glowPulse {
+  0%,100% { opacity: .7; }
+  50% { opacity: .85; }
+}
 
-    /* Prevent scrolling everywhere */
-    html, body {
-      margin: 0;
-      height: 100vh;
-      overflow: hidden;
-      background: black;
-    }
+.grid-bg {
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.07) 1.2px, transparent 1.2px),
+    linear-gradient(90deg, rgba(255,255,255,0.07) 1.2px, transparent 1.2px);
+  background-size: 30px 30px;
+  pointer-events: none;
+  z-index: 1;
+}
 
-    /* Perfect centering wrapper */
-    body {
-      display: grid;
-      place-items: center;
-      text-align: center;
-      position: relative;
-    }
+.grain {
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.15'/%3E%3C/svg%3E");
+  opacity: 0.05;
+  mix-blend-mode: overlay;
+  pointer-events: none;
+  z-index: 2;
+}
 
-    /* ===== Ambient glow (stable) ===== */
-    .glow-bg {
-      position: fixed;
-      inset: 0;
-      background: radial-gradient(
-        circle at center,
-        rgba(255,255,255,0.05) 0%,
-        rgba(255,255,255,0.02) 40%,
-        transparent 75%
-      );
-      filter: blur(60px);
-      opacity: 0.75;
-      animation: glowPulse 22s ease-in-out infinite;
-      pointer-events: none;
-      z-index: 0;
-    }
+.vignette {
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(circle at center,
+    transparent 55%,
+    rgba(0,0,0,.35) 80%,
+    rgba(0,0,0,.6) 100%);
+  pointer-events: none;
+  z-index: 3;
+}
 
-    @keyframes glowPulse {
-      0%,100% { opacity: .7; }
-      50% { opacity: .85; }
-    }
+h1 {
+  position: relative;
+  z-index: 4;
+  font-family: "Adelia", cursive;
+  color: white;
+  margin: 0;
+  font-size: clamp(2.8rem, 8vw, 5.5rem);
+  line-height: 1.15;
+  text-align: center;
+}
 
-    /* ===== Stable grid background ===== */
-    .grid-bg {
-      position: fixed;
-      inset: 0;
-      background-image:
-        linear-gradient(rgba(255,255,255,0.035) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,0.035) 1px, transparent 1px);
-      background-size: 32px 32px;
-      animation: gridDrift 60s linear infinite;
-      pointer-events: none;
-      z-index: 1;
-    }
+.float {
+  display: inline-block;
+  will-change: transform, text-shadow;
+}
 
-    @keyframes gridDrift {
-      from { background-position: 0 0; }
-      to { background-position: 64px 32px; }
-    }
+/* mobile navbar sizing */
+@media (max-width: 768px) {
+  .nav {
+    width: 60vw;
+    padding: 22px 0;
+    font-size: clamp(15px, 3vw, 18px);
+  }
 
-    /* Grain */
-    .grain {
-      position: fixed;
-      inset: 0;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.15'/%3E%3C/svg%3E");
-      opacity: 0.05;
-      mix-blend-mode: overlay;
-      pointer-events: none;
-      z-index: 2;
-    }
-
-    /* Vignette */
-    .vignette {
-      position: fixed;
-      inset: 0;
-      background: radial-gradient(circle at center,
-        transparent 55%,
-        rgba(0,0,0,.35) 80%,
-        rgba(0,0,0,.6) 100%);
-      pointer-events: none;
-      z-index: 3;
-    }
-
-    /* ===== Main text ===== */
-    h1 {
-      position: relative;
-      z-index: 4;
-      font-family: "Adelia", cursive;
-      color: white;
-      margin: 0;
-      padding: 0 1rem;
-      font-size: clamp(2.8rem, 8vw, 5.5rem);
-      line-height: 1.15;
-      text-shadow: 0 0 14px rgba(255,255,255,0.18);
-    }
-
-    /* Desktop single line */
-    .line-break { display: none; }
-
-    /* Mobile stacked */
-    @media (max-width: 600px) {
-      h1 {
-        font-size: clamp(3rem, 13vw, 4.5rem);
-      }
-      .line-break { display: block; }
-    }
-
-  </style>
+  .nav:hover,
+  .nav.active {
+    width: 85vw;
+  }
+}
+</style>
 </head>
 
 <body>
-  <div class="glow-bg"></div>
-  <div class="grid-bg"></div>
-  <div class="grain"></div>
-  <div class="vignette"></div>
 
-  <h1>
-    Japanese<span class="line-break"></span>Denim
-  </h1>
+<a href="https://www.youtube.com/watch?v=JjBYmLxmT_U" class="nav" target="_blank">☆☆☆</a>
+
+<div class="glow-bg"></div>
+<div class="grid-bg"></div>
+<div class="grain"></div>
+<div class="vignette"></div>
+
+<h1>
+  <span class="float">Always.</span>
+</h1>
+
+<script>
+const text = document.querySelector(".float");
+const grid = document.querySelector(".grid-bg");
+const glow = document.querySelector(".glow-bg");
+
+let start = performance.now();
+let cx = 0, cy = 0, rot = 0;
+
+function lerp(a,b,t){ return a+(b-a)*t; }
+
+function animate(now){
+  const t = (now-start)/1000;
+
+  const tx = Math.sin(t*0.6)*6 + Math.sin(t*1.1)*2;
+  const ty = Math.cos(t*0.8)*10 + Math.sin(t*0.45)*4;
+  const tr = Math.sin(t*0.4)*1.5;
+
+  cx = lerp(cx, tx, 0.05);
+  cy = lerp(cy, ty, 0.05);
+  rot = lerp(rot, tr, 0.05);
+
+  text.style.transform = `translate(${cx}px,${cy}px) rotate(${rot}deg)`;
+  grid.style.backgroundPosition = `${cx}px ${cy}px`;
+  glow.style.transform = `translate(${cx*0.3}px,${cy*0.3}px)`;
+
+  requestAnimationFrame(animate);
+
+}
+
+requestAnimationFrame(animate);
+
+
+
+requestAnimationFrame(animate);
+
+
+
+
+  
+
+</script>
+
 </body>
 </html>
