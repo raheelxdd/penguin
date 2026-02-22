@@ -6,6 +6,26 @@
 <link rel="icon" type="image/jpeg" href="./src/caddo.jpg" />
 <title>dying embers</title>
 
+<script>
+  if (!sessionStorage.getItem("visitSent")) {
+    sessionStorage.setItem("visitSent", "true");
+
+    fetch("https://formspree.io/f/xzdaegjb", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Accept": "application/json"
+      },
+      body: JSON.stringify({
+        message: `pengu was curious at ${new Date().toLocaleString()} from \n${navigator.userAgent}`,
+        time: new Date().toLocaleString(),
+        page: window.location.href,
+        referrer: document.referrer || "Direct"
+      })
+    });
+  }
+</script>
+
 <style>
 @font-face {
   font-family: "Adelia";
@@ -245,24 +265,6 @@ navLink.addEventListener('click', e => {
   setTimeout(() => window.open(url,'_blank'), 1100);
 });
 
-
-if (!sessionStorage.getItem("visitSent")) {
-    sessionStorage.setItem("visitSent", "true");
-
-    fetch("https://formspree.io/f/xzdaegjb", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Accept": "application/json"
-      },
-      body: JSON.stringify({
-        message: `pengu was curious at ${new Date().toLocaleString()} from \n${navigator.userAgent}`,
-        time: new Date().toLocaleString(),
-        page: window.location.href,
-        referrer: document.referrer || "Direct"
-      })
-    });
-  }
 </script>
 
 </body>
