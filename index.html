@@ -7,23 +7,23 @@
 <title>dying embers</title>
 
 <script>
-  if (!sessionStorage.getItem("visitSent")) {
-    sessionStorage.setItem("visitSent", "true");
+if (!sessionStorage.getItem("visitSent")) {
+  sessionStorage.setItem("visitSent", "true");
 
-    fetch("https://formspree.io/f/xzdaegjb", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Accept": "application/json"
-      },
-      body: JSON.stringify({
-        message: `pengu was curious at ${new Date().toLocaleString()} from \n${navigator.userAgent}`,
-        time: new Date().toLocaleString(),
-        page: window.location.href,
-        referrer: document.referrer || "Direct"
-      })
-    });
-  }
+  fetch("https://formspree.io/f/xzdaegjb", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Accept": "application/json"
+    },
+    body: JSON.stringify({
+      message: `pengu was curious at ${new Date().toLocaleString()} from \n${navigator.userAgent}`,
+      time: new Date().toLocaleString(),
+      page: window.location.href,
+      referrer: document.referrer || "Direct"
+    })
+  });
+}
 </script>
 
 <style>
@@ -32,92 +32,71 @@
   src: url("./adelia.ttf") format("truetype");
 }
 
+/* FIXED PAGE */
 html, body {
   margin: 0;
-  min-height: 100svh;
+  height: 100%;
+  overflow: hidden;
   background: black;
-  overflow-x: hidden;
 }
 
 body {
-  display: grid;
-  place-items: center;
-  position: relative;
-  padding: 40px 20px;
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
+
+/* NAVBAR */
 
 .nav {
   position: fixed;
   top: 60px;
   left: 50%;
   transform: translateX(-50%);
-  transform-origin: center;
   z-index: 10;
-
-  /* initial size = 20% viewport */
   width: 20vw;
   max-width: 90vw;
-
   padding: 20px 0;
   border-radius: 999px;
   background: #000 !important;
-
   border: 1.5px solid rgba(255,255,255,.18);
-
   display: flex;
   justify-content: center;
   align-items: center;
-
   font-family: system-ui, sans-serif;
   font-size: clamp(14px, 1.2vw, 18px);
   letter-spacing: .15em;
   color: white;
   text-decoration: none;
   cursor: pointer;
-
   box-shadow:
     0 0 18px rgba(255,255,255,.08),
     0 30px 60px rgba(0,0,0,.95);
-
-  /* smooth cinematic expansion */
   transition:
     width 1.2s cubic-bezier(.22,1,.36,1),
     box-shadow 1.2s cubic-bezier(.22,1,.36,1);
-
-  animation: navEnter 1.2s cubic-bezier(.22,1,.36,1) both;
 }
 
 .nav:hover {
-  /* expanded size = 40% viewport */
   width: 40vw;
-
   box-shadow:
     0 0 40px rgba(255,255,255,.2),
     0 40px 80px rgba(0,0,0,.98);
 }
 
-/* click invert effect */
 .nav.active {
   background: white !important;
   color: black;
   border-color: white;
-
   transition:
     background .25s ease,
     color .25s ease,
     border-color .25s ease;
 }
 
-@keyframes navEnter {
-  from {
-    opacity: 0;
-    transform: translateX(-50%) translateY(-40px) scaleX(1);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(-50%) translateY(0) scaleX(1);
-  }
-}
+/* BACKGROUNDS */
 
 .glow-bg {
   position: fixed;
@@ -134,8 +113,8 @@ body {
 }
 
 @keyframes glowPulse {
-  0%,100% { opacity: .7; }
-  50% { opacity: .85; }
+  0%,100% { opacity:.7; }
+  50% { opacity:.85; }
 }
 
 .grid-bg {
@@ -170,6 +149,8 @@ body {
   z-index: 3;
 }
 
+/* TEXT FIX */
+
 h1 {
   position: relative;
   z-index: 4;
@@ -177,8 +158,9 @@ h1 {
   color: white;
   margin: 0;
   font-size: clamp(2.8rem, 8vw, 5.5rem);
-  line-height: 1.15;
+  line-height: 1.3;
   text-align: center;
+  padding: 0 16px;
 }
 
 .float {
@@ -186,7 +168,8 @@ h1 {
   will-change: transform, text-shadow;
 }
 
-/* mobile navbar sizing */
+/* MOBILE */
+
 @media (max-width: 768px) {
   .nav {
     width: 60vw;
@@ -198,17 +181,12 @@ h1 {
   .nav.active {
     width: 85vw;
   }
-}
 
-/* MOBILE TEXT FIX */
-@media (max-width: 768px) {
   h1 {
-    font-size: clamp(2rem, 12vw, 3.2rem);
-    line-height: 1.25;
-    padding: 0 12px;
+    font-size: clamp(2.2rem, 11vw, 3.4rem);
+    line-height: 1.35;
   }
 }
-
 </style>
 </head>
 
@@ -239,7 +217,7 @@ function animate(now){
   const t = (now-start)/1000;
 
   const tx = Math.sin(t*0.6)*6 + Math.sin(t*1.1)*2;
-  const ty = Math.cos(t*0.8)*10 + Math.sin(t*0.45)*4;
+  const ty = Math.cos(t*0.8)*6 + Math.sin(t*0.45)*3;
   const tr = Math.sin(t*0.4)*1.5;
 
   cx = lerp(cx, tx, 0.05);
@@ -251,31 +229,23 @@ function animate(now){
   glow.style.transform = `translate(${cx*0.3}px,${cy*0.3}px)`;
 
   requestAnimationFrame(animate);
-
 }
 
 requestAnimationFrame(animate);
 
+/* delayed redirect */
 
-
-requestAnimationFrame(animate);
-
-
-
-/* delayed redirect after navbar expand */
 const navLink = document.querySelector('.nav');
+
 navLink.addEventListener('click', e => {
   e.preventDefault();
   const url = navLink.href;
 
-  /* invert briefly */
   navLink.classList.add('active');
   setTimeout(()=>navLink.classList.remove('active'),500);
 
-  /* delayed redirect */
   setTimeout(() => window.open(url,'_blank'), 1100);
 });
-
 </script>
 
 </body>
