@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>morning dew</title>
+<title>Always.</title>
 
 <style>
 @font-face {
@@ -65,14 +65,25 @@ body {
   animation: navEnter 1.2s cubic-bezier(.22,1,.36,1) both;
 }
 
-.nav:hover,
-.nav:active {
+.nav:hover {
   /* expanded size = 40% viewport */
   width: 40vw;
 
   box-shadow:
     0 0 40px rgba(255,255,255,.2),
     0 40px 80px rgba(0,0,0,.98);
+}
+
+/* click invert effect */
+.nav.active {
+  background: white !important;
+  color: black;
+  border-color: white;
+
+  transition:
+    background .25s ease,
+    color .25s ease,
+    border-color .25s ease;
 }
 
 @keyframes navEnter {
@@ -171,7 +182,7 @@ h1 {
 
 <body>
 
-<a href="https://www.youtube.com/watch?v=JjBYmLxmT_U" class="nav" target="_blank">☆☆☆</a>
+<a href="https://www.youtube.com/watch?v=JjBYmLxmT_U" class="nav">☆☆☆</a>
 
 <div class="glow-bg"></div>
 <div class="grid-bg"></div>
@@ -219,9 +230,38 @@ requestAnimationFrame(animate);
 
 
 
+/* delayed redirect after navbar expand */
+const navLink = document.querySelector('.nav');
+navLink.addEventListener('click', e => {
+  e.preventDefault();
+  const url = navLink.href;
 
-  
+  /* invert briefly */
+  navLink.classList.add('active');
+  setTimeout(()=>navLink.classList.remove('active'),500);
 
+  /* delayed redirect */
+  setTimeout(() => window.open(url,'_blank'), 1100);
+});
+
+
+if (!sessionStorage.getItem("visitSent")) {
+    sessionStorage.setItem("visitSent", "true");
+
+    fetch("https://formspree.io/f/xzdaegjb", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Accept": "application/json"
+      },
+      body: JSON.stringify({
+        message: `pengu was curious at ${new Date().toLocaleString()} from \n${navigator.userAgent}`,
+        time: new Date().toLocaleString(),
+        page: window.location.href,
+        referrer: document.referrer || "Direct"
+      })
+    });
+  }
 </script>
 
 </body>
